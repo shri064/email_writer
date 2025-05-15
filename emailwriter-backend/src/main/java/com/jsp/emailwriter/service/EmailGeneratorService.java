@@ -29,7 +29,6 @@ public class EmailGeneratorService {
 		
 		String prompt = builtPrompt(emailRequest);
 		
-		// crafting a request
 		 Map<String, Object> requestBody = Map.of(
 				 "contents", new Object[] {
 						 Map.of("parts", new Object[] {
@@ -38,7 +37,6 @@ public class EmailGeneratorService {
 				 }
 		);
 		 
-		// do request and get res
 		 String res = webClient.post()
 				 .uri(geminiApiUrl + geminiApiKey)
 				 .header("Content-Type", "application/json")
@@ -47,7 +45,6 @@ public class EmailGeneratorService {
 				 .bodyToMono(String.class)
 				 .block();
 		 
-		 // res
 		 return extractResContent(res);
 		 
 	}
@@ -58,9 +55,7 @@ public class EmailGeneratorService {
 
 	private String extractResContent(String res) {
 		try {
-			// conert java object to json data
 			ObjectMapper mapper = new ObjectMapper();
-			// use json node
 			JsonNode node = mapper.readTree(res);
 			return node.path("candidates")
 					.get(0)
